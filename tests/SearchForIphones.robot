@@ -29,14 +29,11 @@ Value Can Not Be Greater Than U$2000
     Then It Should Not Be Greater Than      ${USD_Value}    2000 
 
 Search For a Different and Cheaper Product 
-   
-    [Tags]      test
 
     Given I open the browser and Go To Google Page  
     And I search for "Amazon Brasil" and Press Enter
     And I Could Search For Iphone
     When I find another items that do not start with "Iphone"
-    Then I can identify the cheapest price by comparing the item that starts with "IPhone"
-    ${USD_Value}    And Get usd Price        ${Oth_Item}
-
-  
+    ${product}          Then I can identify the lowest price
+    ${USD_Product}      And Get Price         ${product}
+    And I Can Verify if the value is cheaper than a "IPhone"

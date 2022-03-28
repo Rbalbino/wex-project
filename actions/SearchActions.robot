@@ -58,23 +58,46 @@ I find another items that do not start with "Iphone"
     Wait For Elements State     xpath=//*[starts-with(@data-cel-widget,"MAIN-SEARCH_RESULTS-10")]//h2           visible     5
     ${Other_Item}     Get Element State          xpath=//span[contains(text(),'Adaptador iPhone Aux P2 / Lightning Fone Ouvido Qu')]
     
-I can identify the cheapest price by comparing the item that starts with "IPhone"
+I can identify the lowest price
 
-    Wait For Elements State     xpath=//*[starts-with(@data-cel-widget,"MAIN-SEARCH_RESULTS-10")]//h2           visible     5
     ${c_elements}     Get Elements          xpath=//*[starts-with(@data-cel-widget,"MAIN-SEARCH_RESULTS-48")]//span[@class='a-offscreen']
- 
+
+    
     @{c_prices}=             Create List
 
     FOR     ${c_element}        IN      @{c_elements}
    
-        ${c_text}=     Get Property    ${c_element}    innerText   
-        Append To List      ${c_prices}       ${c_text}
+         ${c_text}=     Get Property    ${c_element}    innerText   
+         Append To List      ${c_prices}       ${c_text}
 
     END
-   
-   
-    ${Oth_Item}=       Get Highest Value          ${c_prices}
-    [Return]     ${Oth_Item}
+      
+    ${product}=         Get Highest Value           ${c_prices}
+     
+    [Return]            ${product}
+
+And Get Price
+    [Arguments]     ${brl}
+  
+    ${usd}=                  GET Exchange Rates
+    ${converted_value}=      Get Usd Value           ${usd}       ${brl}
+
+    [Return]     ${converted_value}
+
+I Can Verify if the value is cheaper than a "IPhone"
+
+    Given I open the browser and Go To Google Page  
+    And I search for "Amazon Brasil" and Press Enter
+    And I Could Search For Iphone
+    ${Highest_Price}    When I Get the Highset price       
+    ${USD_Value}        And Get usd Price       ${Highest_Price}
+    When I find another items that do not start with "Iphone"
+    ${product}          Then I can identify the lowest price
+    ${USD_Product}      And Get Price         ${product}
+    I can compare       ${Highest_Price}         ${USD_Product}
+
+
+
 
 
 

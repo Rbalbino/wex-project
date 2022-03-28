@@ -29,8 +29,7 @@ class CustomLibrary:
     def it_should_not_be_greater_than(self, value, expected_value):
         if value > float(expected_value):
            raise ValueError(f"Should not be grater than U${expected_value}, but got U${value}")
-           
 
-
-
-   
+    def I_can_compare(self, product1, product2):  
+        if product2 <  product1:
+            print("Item value is cheaper than Iphone")
